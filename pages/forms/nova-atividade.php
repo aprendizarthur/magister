@@ -42,7 +42,7 @@ criarAtividade($mysqli);
                         <form method="POST" class="form ubuntu-regular text-left">
                             <div class="form-group">
                                 <label for="nome">Nome ou Assunto</label>
-                                <input required value="<?php if(isset($_SESSION['valor-registro-nome'])){echo $_SESSION['valor-registro-nome']; unset($_SESSION['valor-registro-nome']);}?>" class="form-control" maxlength="100" type="text" autocomplete="nome" name="nome" id="nome">
+                                <input required value="<?php if(isset($_SESSION['valor-registro-nome'])){echo $_SESSION['valor-registro-nome']; unset($_SESSION['valor-registro-nome']);}?>" class="form-control" maxlength="15" type="text" placeholder="Até 15 caracteres" autocomplete="nome" name="nome" id="nome">
                                 <?php if(isset($_SESSION['erro-registro-nome'])){echo '<small class="erro">'. $_SESSION['erro-registro-nome'].'</small>'; unset($_SESSION['erro-registro-nome']);} ?>
                             </div>
                             <!--tipo de atividade-->

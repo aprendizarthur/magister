@@ -1,10 +1,8 @@
 <?php 
 session_start();
-require('../../functions/CRUD/CRUDusuarios.php');
+require('../../functions/CRUD/CRUDatividades.php');
 require('../../functions/redirects.php');
 redirecionaDeslogado();
-//FUNÇÃO QUE EFETUA O REGISTRO
-registrarUsuario($mysqli);
 ?>
 
 <!DOCTYPE html>
@@ -34,19 +32,26 @@ registrarUsuario($mysqli);
 <body>
     <div class="container">
         <main>
-            <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-12 p-4 border">
-                    <section id="nav-principal">
+            <div class="row d-flex justify-content-around">
+                <!--NAV LATERAL-->
+                <div id="nav-principal" class="col-2 col-md-4 col-lg-3 p-4 border">
+                    <section>
                         <nav>
-                            <ul>
-                                <li><a href="logout.php">Logout</a></li>
-                                <li><a href="../forms/nova-atividade.php">Nova atividade</a></li>
+                            <ul class="ubuntu-regular p-2">
+                                <li><a class="selected" href="painel.php"><i class="fa-solid fa-list-check fa-xl"></i><span class="d-none d-md-inline">Atividades</span></a></li>
+                                <li><a href="painel.php#pesquisa"><i class="fa-solid fa-magnifying-glass fa-lg"></i><span class="d-none d-md-inline">Pesquisa</span></a></li>
+                                <li><a href="../forms/nova-atividade.php"><i class="fa-solid fa-plus fa-xl"></i><span class="d-none d-md-inline">Criar</span></a></li>
+                                <li><a href="logout.php"><i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i><span class="d-none d-md-inline">Sair</span></a></li>
                             </ul>
                         </nav>
                     </section>
-                    
-                    <?php echo $_SESSION['tipo-usuario']; echo $_SESSION['email-usuario']; echo $_SESSION['nome-usuario']; ?>
-                    
+                </div>
+
+                <!--CONTEUDO PRINCIPAL-->
+                <div id="conteudo-principal" class="col-10 col-md-8 col-lg-9 p-4 border">
+                    <section id="atividades">
+                        <?php pesquisarAtividades($mysqli); ?>              
+                    </section>
                 </div>
             </div>
         </main>

@@ -1,9 +1,159 @@
 /* SELETORES ID */
+    #pesquisar input[type="search"]{
+        width: 80% !important;
+        border-radius: 5px;
+        display: inline;
+        border: solid 1px #dee2e6;
+    }
+
+    #pesquisar input[type="search"]:focus{
+        outline: 1px solid #249EF0;
+    }
+
+    #pesquisar button[type="submit"]{
+        width: 17% !important;   
+        display: inline;
+    }
+
     #registro-atividade div[class="form-group"] label{
         color: rgb(240, 175, 175) !important;
     }
 
+    #nav-principal{
+        height: 90vh;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-right: none !important;
+        border-top: solid 1px #b4b4b4;
+        border-left: solid 1px #b4b4b4;
+        border-bottom: solid 1px #b4b4b4;
+    }
+
+    #nav-principal a{
+        color: #272727 !important;
+        text-decoration: none;
+    }
+
+    #nav-principal .selected{
+        color: #249EF0 !important;
+        text-decoration: none;
+    }
+
+    #nav-principal li:last-of-type a:hover{
+        color: rgb(240, 175, 175) !important;
+        text-decoration: none;
+    }
+
+    #nav-principal a:hover{
+        color: #249EF0!important;
+        text-decoration: none;
+    }
+
+    #nav-principal ul{
+        display: flex;
+        flex-direction: column;
+    }
+
+    #nav-principal li:first-of-type{
+        margin-top: 0px !important;
+        margin-bottom: 20px !important;
+    }
+
+    #nav-principal li{
+        margin-top: 20px !important;
+        margin-bottom: 20px !important;
+    }
+
+    #nav-principal span{
+        margin-left: 10px;
+    }
+
+    #conteudo-principal{
+        height: 90vh;
+        overflow-y: auto;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    #conteudo-principal h2{
+        color: #272727 !important;
+        font-size: 1.25rem !important;
+    }
+
+    #atividades div[class="m-3 col-11 col-lg-5 p-4 border"]{
+        height: 30vh;
+    }
+
+    #atividades div[class="m-3 col-11 col-lg-5 p-4 border"] small{
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    #atividades ul li{
+        display: inline;
+    }
+
+    #atividades footer ul{
+        background-color: white !important;
+        border-radius: 8px;
+    }
+
+    #atividades footer a{
+        color: #249EF0;
+        padding: 25px;
+    }
+
+    #atividades header li{
+        color: #b4b4b4 !important;
+    }
+
+    #atividades header li[class="p-2"]:last-of-type{
+        margin-right: 0px;
+    }
+
+    #atividades span{
+        font-size: 1.07rem !important;
+    }
+
+    #atividades .card-atividade footer ul{
+        border: solid 1px #dee2e6 !important;
+        color: #FFFFFF !important;
+    }
+
+    #atividades footer a:hover{
+        color: #249EF0 !important;
+        text-decoration: none;
+    }
+
 /* SELETORES CLASSE */
+    .resultados a{
+        color: rgb(97, 97, 97) !important;
+    }
+
+    .editar a{
+        color: rgb(112, 194, 112) !important;
+    }
+
+    .card-atividade{
+        background-color: #FFFFFF !important;
+        border: solid 1px #dee2e6 !important;
+        color: #272727;
+    }
+
+    .card-atividade span{
+        color: #272727;
+    }
+
+    .card-atividade h3{
+        color: #272727;
+    }
+
+    .card-atividade:hover{
+        transition: 0.2s linear;
+        transform: scale(1.01);
+        border: solid 1px #249EF0 !important;
+    }
+
     .btn:hover{
         transition: 0.5s linear;
         transform: scale(1.03);
@@ -13,14 +163,14 @@
         background-color: #249EF0 !important;
         color: #FFFFFF !important;
         border: solid 1px #249EF0 !important;
-        border-radius: 18px !important;
+        border-radius: 8px !important;
     }
 
     .btn-secondary{
         background-color: #FFFFFF !important;
         color: #249EF0 !important;
         border: solid 1px #249EF0 !important;
-        border-radius: 18px !important;
+        border-radius: 8px !important;
     }
     
     .link-pequeno{
@@ -33,7 +183,7 @@
     }
 
     .form-group small{
-        color: red;
+        color: rgb(240, 175, 175);
     }
 
     .form-group input[type="checkbox"] + small{
@@ -45,6 +195,10 @@
         color: #249EF0 !important;
     }
 /*SELETORES DE TAG*/
+    div[class="row d-flex justify-content-around"]{
+        margin-top: 20px;
+    }
+
     input[type="checkbox"]{ 
         appearance: none;
         vertical-align: middle;
@@ -89,6 +243,54 @@
         color: rgb(112, 194, 112) !important;
     }
     
+/* MEDIA QUERIES */
+
+    /*APENAS TELAS PEQUENAS */
+    @media(max-width: 575px){
+        .container{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+    }
+    /*ATÉ TELAS MÉDIAS*/
+    @media(max-width: 768px){
+        .card-atividade{
+        background-color: #FFFFFF !important;
+        border: solid 1px #dee2e6 !important;
+        }
+        
+        #atividades div[class="m-3 col-11 col-lg-5 p-4 border"]{
+            height: 20vh;
+        }
+
+        #nav-principal ul{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #nav-principal .selected{
+            padding-bottom: 7px;
+            color: #b4b4b4 !important;
+            text-decoration: none;
+            border-radius: 2px;
+            border-bottom: #b4b4b4 3px solid;
+        }
+
+        div[class="row d-flex justify-content-around"]{
+            margin: 0px;
+        }
+
+        #conteudo-principal{
+        height: 100vh;
+        }
+
+        #nav-principal{
+        height: 100vh;
+        }
+    }
+
 /* CLASSES DE FONTE */
     .ubuntu-light {
     font-family: "Ubuntu", sans-serif;
@@ -114,6 +316,7 @@
     h2{font-size: 1.5rem !important;}
     h3{font-size: 1.25rem !important;}
     p{font-size: 1.2rem !important;}
+    span{font-size: 1.25rem !important;}
     small{font-size: 0.900rem !important;}
 
 
