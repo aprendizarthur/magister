@@ -4,6 +4,7 @@ require('../../functions/CRUD/CRUDatividades.php');
 require('../../functions/redirects.php');
 atividadeExiste($mysqli);
 realizouAtividade($mysqli);
+adicionarVisualizacao($mysqli);
 ?>
 
 <!DOCTYPE html>

@@ -182,7 +182,6 @@ require('../../functions/validacoes.php');
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
             $pesquisa = $mysqli->real_escape_string($_POST['pesquisa']);
             $consulta = "SELECT * FROM atividades WHERE nome LIKE '%$pesquisa%' ORDER BY registro DESC";
-            
             if($resultado = $mysqli->query($consulta)){
                 echo '
                         <div class="row d-flex p-1 justify-content-between">
@@ -200,13 +199,15 @@ require('../../functions/validacoes.php');
                     '; 
 
                 while($dados = $resultado->fetch_assoc()){
+                    $id = $dados['id'];
+                    $dadosAtividade = dadosAtividadepainel($mysqli, $id);
                     echo '
                         <div class="card-atividade mb-3 d-flex align-items-center justify-content-center mx-3 col-11 col-lg-5 p-4 border">
                                 <article class="w-100">
                                     <header>
                                         <ul class="ubuntu-light d-flex justify-content-between align-items-center">
                                             <li><small><i class="fa-solid fa-calendar-days"></i> '.$dados['registro'].'</small></li>
-                                            <li><small class="mr-3"><i class="fa-solid fa-clipboard-list"></i> 0</small><small><i class="fa-solid fa-eye"></i> 0</small></li>
+                                            <li><small class="mr-3"><i class="fa-solid fa-clipboard-list mr-1"></i>'.$dadosAtividade[0].'</small><small><i class="fa-solid fa-eye mr-1"></i>'.$dadosAtividade[1].'</small></li>
                                         </ul>
                                     </header>
                                     <div class="my-3">
@@ -247,6 +248,8 @@ require('../../functions/validacoes.php');
                     '; 
 
                 while($dados = $resultado->fetch_assoc()){
+                    $id = $dados['id'];
+                    $dadosAtividade = dadosAtividadepainel($mysqli, $id);
                     echo '
                             <div class="card-atividade mb-3 d-flex align-items-center justify-content-center mx-3 col-11 col-lg-5 p-4 border">
                                 <article class="w-100">
@@ -254,7 +257,7 @@ require('../../functions/validacoes.php');
                                     <header>
                                         <ul class="ubuntu-light d-flex justify-content-between align-items-center">
                                             <li><small><i class="fa-solid fa-calendar-days"></i> '.$dados['registro'].'</small></li>
-                                            <li><small class="mr-3"><i class="fa-solid fa-clipboard-list"></i> 0</small><small><i class="fa-solid fa-eye"></i> 0</small></li>
+                                            <li><small class="mr-3"><i class="fa-solid fa-clipboard-list mr-1"></i>'.$dadosAtividade[0].'</small><small><i class="fa-solid fa-eye mr-1"></i>'.$dadosAtividade[1].'</small></li>
                                         </ul>
                                     </header>
                                     <div class="my-3">
@@ -523,5 +526,42 @@ require('../../functions/validacoes.php');
             }
         }
         return $acertos;
+    }
+
+    //FUNÇÃO QUE VERIFICA IP+USER_AGENT E ADICIONA VISUALIZAÇÃO P/ ATIVIDADE
+    function adicionarVisualizacao($mysqli){
+        $id = $mysqli->real_escape_string($_GET['id']);
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+        $consulta = "SELECT COUNT(*) AS total FROM visualizacoes WHERE id_atividade = '$id' AND ip_visualizou = '$ip' AND user_agent_visualizou = '$userAgent'";
+
+        if($resultado = $mysqli->query($consulta)){
+            $dados = $resultado->fetch_assoc();
+
+            if($dados['total'] == 0){
+                $consulta = "INSERT INTO visualizacoes (id_atividade, ip_visualizou, user_agent_visualizou) VALUES ('$id', '$ip', '$userAgent')";
+                $mysqli->query($consulta);
+            }
+        }
+    }
+
+    //FUNÇÃO QUE RETORNA O TOTAL DE RESULTADOS/VISUALIZACOES DE UMA ATIVIDADE
+    function dadosAtividadepainel($mysqli, $id){
+        $dadosAtividade = ["", ""];
+
+        $consulta = "SELECT COUNT(*) AS total FROM resultados WHERE id_atividade = '$id'";
+
+        $resultado = $mysqli->query($consulta);
+        $dados = $resultado->fetch_assoc();
+        $dadosAtividade[0] = $dados['total'];
+
+        $consulta = "SELECT COUNT(*) AS total FROM visualizacoes WHERE id_atividade = '$id'";
+
+        $resultado = $mysqli->query($consulta);
+        $dados = $resultado->fetch_assoc();
+        $dadosAtividade[1] = $dados['total'];
+        
+        return $dadosAtividade;
     }
 ?>
