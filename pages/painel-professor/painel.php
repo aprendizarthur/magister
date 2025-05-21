@@ -8,15 +8,17 @@ redirecionaDeslogado();
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+<!--CSS PARA LAYOUT FICAR 100% DA TELA NO MOBILE SEM MARGENS DO CONTAINER-->
+    <style>@media(max-width: 575px){.container{margin: 0;padding: 0;width: 100% !important;}}</style>
 <!--META TAGS-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
     <title>Magister - Painel do Professor</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
-    <meta name="theme-color" content="##249EF0">
+    <meta name="theme-color" content="#249EF0">
     
 <!--BOOTSTRAP CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -38,6 +40,7 @@ redirecionaDeslogado();
                     <section>
                         <nav>
                             <ul class="ubuntu-regular p-2">
+                                <li class="ubuntu-bold logo"><i class="fa-solid fa-graduation-cap fa-xl"></i><span class="d-none d-md-inline">MAGISTER <sup class="ubuntu-light">®</sup></span></li>
                                 <li><a class="selected" href="painel.php"><i class="fa-solid fa-list-check fa-xl"></i><span class="d-none d-md-inline">Atividades</span></a></li>
                                 <li><a href="painel.php#pesquisa"><i class="fa-solid fa-magnifying-glass fa-lg"></i><span class="d-none d-md-inline">Pesquisa</span></a></li>
                                 <li><a href="../forms/nova-atividade.php"><i class="fa-solid fa-plus fa-xl"></i><span class="d-none d-md-inline">Criar</span></a></li>

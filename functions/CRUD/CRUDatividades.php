@@ -44,11 +44,11 @@ require('../../functions/validacoes.php');
     //FUNÇÃO QUE CRIA AS QUESTÕES DA ATIVIDADE, VALIDA E ENVIA PRO DB
     function criarQuestoes($mysqli){
         $idAtividade = criarIDatividade($mysqli);
-        $Nquestoes = $_SESSION['registro-atividade-questoes'];
-        $Nalternativas = $_SESSION['registro-atividade-alternativas']; 
-        $nome = $_SESSION['registro-atividade-nome']; 
-        $professor = $_SESSION['nome-usuario'];
-        $anonimo = $_SESSION['registro-atividade-anonimo'];
+        $Nquestoes = htmlspecialchars($_SESSION['registro-atividade-questoes']);
+        $Nalternativas = htmlspecialchars($_SESSION['registro-atividade-alternativas']); 
+        $nome = htmlspecialchars($_SESSION['registro-atividade-nome']); 
+        $professor = htmlspecialchars($_SESSION['nome-usuario']);
+        $anonimo = htmlspecialchars($_SESSION['registro-atividade-anonimo']);
         $tipoAtividade = "Multipla Escolha";
 
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
@@ -56,21 +56,21 @@ require('../../functions/validacoes.php');
             $verificacaoALTERNATIVAS = validarALTERNATIVAS($Nquestoes, $Nalternativas);
             
             if($verificacaoENUNCIADOS == "" && $verificacaoALTERNATIVAS == ""){
-                $consulta = "INSERT INTO atividades (id, tipo, nome, professor, questoes, alternativas) VALUES ('$idAtividade', '$tipoAtividade', '$nome', '$professor', '$Nquestoes', '$Nalternativas')";
+                $consulta = "INSERT INTO atividades (id, tipo, anonimo, nome, professor, questoes, alternativas) VALUES ('$idAtividade', '$tipoAtividade', '$anonimo', '$nome', '$professor', '$Nquestoes', '$Nalternativas')";
 
                 if($resultado = $mysqli->query($consulta)){
                     $Nalternativas = (int) $Nalternativas;
                     for($i = 0; $i <= $Nquestoes - 1; $i++){
                         $j = 1;
                         //salvar enunciado e alternatvias de cada questão
-                        $enunciado = $_POST['enunciado-'.($i+1)];
-                        $correta = $_POST['alternativa-'.($i+1)."-".($Nalternativas)];
-                        $alternativa1 = $_POST['alternativa-'.($i+1)."-".($j)];
-                        $alternativa2 = $_POST['alternativa-'.($i+1)."-".($j+1)];
-                        $alternativa3 = $_POST['alternativa-'.($i+1)."-".($j+2)] ?? "";
-                        $alternativa4 = $_POST['alternativa-'.($i+1)."-".($j+3)] ?? "";
+                        $enunciado = $mysqli->real_escape_string($_POST['enunciado-'.($i+1)]);
+                        $correta = $mysqli->real_escape_string($_POST['alternativa-'.($i+1)."-".($Nalternativas)]);
+                        $alternativa1 = $mysqli->real_escape_string($_POST['alternativa-'.($i+1)."-".($j)]);
+                        $alternativa2 = $mysqli->real_escape_string($_POST['alternativa-'.($i+1)."-".($j+1)]);
+                        $alternativa3 = $mysqli->real_escape_string($_POST['alternativa-'.($i+1)."-".($j+2)] ?? "");
+                        $alternativa4 = $mysqli->real_escape_string($_POST['alternativa-'.($i+1)."-".($j+3)] ?? "");
 
-                        $consulta = "INSERT INTO questoes (id_atividade, anonimo, enunciado, alternativa1, alternativa2, alternativa3, alternativa4, correta) VALUES ('$idAtividade', '$anonimo', '$enunciado', '$alternativa1', '$alternativa2', '$alternativa3', '$alternativa4', '$correta')";
+                        $consulta = "INSERT INTO questoes (id_atividade, enunciado, alternativa1, alternativa2, alternativa3, alternativa4, correta) VALUES ('$idAtividade', '$enunciado', '$alternativa1', '$alternativa2', '$alternativa3', '$alternativa4', '$correta')";
 
                         if($mysqli->query($consulta)){
                     
@@ -92,17 +92,25 @@ require('../../functions/validacoes.php');
             }                
         } else {
             //exibir formulário
-            mostrarFormularioQuestoes($Nquestoes, $Nalternativas, $nome);
+            mostrarFormularioQuestoes($Nquestoes, $Nalternativas, $professor, $nome);
         }
     }
         //FUNÇÕES SECUNDÁRIAS PARA REGISTRAR ATIVIDADE
         function criarIDatividade($mysqli){
             $alfabeto = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
-            
+            $count = 0;
             do{ 
-                $id = (string)rand(1000000000, 99999999999);
+                $id = (string)rand(1000000000, 9999999999);
                 for($i = 0; $i <= (mb_strlen($id) - 1); $i++){       
-                    if($i % 2 == 0){$id[$i] = $alfabeto[$i];}
+                    if($i % 2 == 0){
+                        $count++;
+                        $id[$i] = $alfabeto[$i];
+
+                        if($count % 3 == 0){
+                            $count = 0;
+                            $id[$i] = (int)rand(0,9);
+                        }
+                    }
                 }
 
                 $consulta = "SELECT COUNT(*) AS total from atividades WHERE id = '$id'";
@@ -116,14 +124,15 @@ require('../../functions/validacoes.php');
         }
 
         //FUNÇÃO QUE EXIBE O FORMULÁRIO PARA NOVA ATIVIDADE
-        function mostrarFormularioQuestoes($Nquestoes, $Nalternativas, $nome){
+        function mostrarFormularioQuestoes($Nquestoes, $Nalternativas, $professor, $nome){
                 //abertura formulario
                 $Nquestoes = (int)$Nquestoes;
                 $Nalternativas = (int)$Nalternativas;
                 echo '
                     <section id="registro" class="text-center">
-                        <h1 class="ubuntu-bold">'.$nome.'</h1>
-                        <p class="ubuntu-regular mt-2">Questionário com '.$Nquestoes.' questões contendo '.$Nalternativas.' alternativas</p>
+                        <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                        <h1 class="ubuntu-bold texto-azul">'.$nome.'</h1>
+                        <p class="ubuntu-regular mt-2 mb-4">Professor(a) '.$professor.' preencha a atividade</p>
                         <form id="registro-atividade" method="POST" class="form ubuntu-regular text-left mt-5">
                 ';
                 //formulario dinamico questões/alternativas
@@ -171,7 +180,7 @@ require('../../functions/validacoes.php');
     //FUNÇÃO PESQUISA DE ATIVIDADES
     function pesquisarAtividades($mysqli){
         if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
-            $pesquisa = htmlspecialchars($_POST['pesquisa']);
+            $pesquisa = $mysqli->real_escape_string($_POST['pesquisa']);
             $consulta = "SELECT * FROM atividades WHERE nome LIKE '%$pesquisa%' ORDER BY registro DESC";
             
             if($resultado = $mysqli->query($consulta)){
@@ -201,8 +210,10 @@ require('../../functions/validacoes.php');
                                         </ul>
                                     </header>
                                     <div class="my-3">
-                                        <h3 class="ubuntu-bold mb-2"> '.$dados['nome'].'</h3> 
-                                        <span class="d-block ubuntu-regular">Atividade contendo '.$dados['questoes'].' questões de '.$dados['alternativas'].' alternativas.</span></span>
+                                        <a href="atividade.php?id='.$dados['id'].'">
+                                            <h3 class="ubuntu-bold mb-2"> '.$dados['nome'].'</h3> 
+                                            <span class="d-block ubuntu-regular">Atividade contendo '.$dados['questoes'].' questões de '.$dados['alternativas'].' alternativas.</span></span>
+                                        </a>
                                     </div>
                                     <footer>
                                         <ul class="p-2 d-flex justify-content-around">                                            
@@ -216,7 +227,7 @@ require('../../functions/validacoes.php');
                 }
             }
         } else {
-            $professor = $_SESSION['nome-usuario'];
+            $professor = $mysqli->real_escape_string($_SESSION['nome-usuario']);
             $consulta = "SELECT * FROM atividades WHERE professor = '$professor'";
             
             if($resultado = $mysqli->query($consulta)){
@@ -239,6 +250,7 @@ require('../../functions/validacoes.php');
                     echo '
                             <div class="card-atividade mb-3 d-flex align-items-center justify-content-center mx-3 col-11 col-lg-5 p-4 border">
                                 <article class="w-100">
+                                
                                     <header>
                                         <ul class="ubuntu-light d-flex justify-content-between align-items-center">
                                             <li><small><i class="fa-solid fa-calendar-days"></i> '.$dados['registro'].'</small></li>
@@ -246,8 +258,10 @@ require('../../functions/validacoes.php');
                                         </ul>
                                     </header>
                                     <div class="my-3">
-                                        <h3 class="ubuntu-bold mb-2"> '.$dados['nome'].'</h3> 
-                                        <span class="d-block ubuntu-regular">Atividade contendo '.$dados['questoes'].' questões de '.$dados['alternativas'].' alternativas.</span></span>
+                                        <a href="atividade.php?id='.$dados['id'].'">
+                                            <h3 class="ubuntu-bold mb-2"> '.$dados['nome'].'</h3> 
+                                            <span class="d-block ubuntu-regular">Atividade contendo '.$dados['questoes'].' questões de '.$dados['alternativas'].' alternativas.</span></span>
+                                        </a>
                                     </div>
                                     <footer>
                                         <ul class="p-2 d-flex justify-content-around">                                            
@@ -261,5 +275,253 @@ require('../../functions/validacoes.php');
                 }
             }
         }
+    }
+
+    //FUNÇÃO QUE EXIBE A ATIVIDADE PARA O ALUNO
+    function exibirAtividade($mysqli){
+        $id = htmlspecialchars($_GET['id']);
+
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])){
+            $id = $mysqli->real_escape_string($id);
+            $nome = $mysqli->real_escape_string($_POST['nome']);
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+            $consulta = "SELECT questoes FROM atividades WHERE id = '$id'";
+
+            if($resultado = $mysqli->query($consulta)){
+                $dados = $resultado->fetch_assoc();
+                
+                $respostas = [''];
+                for($i = 0; $i <= 4; $i++){
+                    if(!empty($_POST['resposta-'.$i+1])){
+                        $respostas[$i] = htmlspecialchars($_POST['resposta-'.$i+1]);
+                    }
+                }
+            }
+            
+            $acertos = corrigirRespostas($mysqli, $id, $respostas);
+            $consulta = "INSERT INTO resultados (id_atividade, ip, user_agent, acertos, nome_aluno) VALUES ('$id', '$ip', '$userAgent', '$acertos', '$nome')";
+
+            if($resultado = $mysqli->query($consulta)){
+                $_SESSION['envio-atividade-nome-usuario'] = $nome;
+                $_SESSION['envio-atividade-acertos'] =  $acertos;
+
+                header("Location: atividade-enviada.php?id='".$id);
+            }
+
+            echo $acertos;
+        } else {
+            $id = $mysqli->real_escape_string($id);
+
+            $consulta = "SELECT anonimo FROM atividades WHERE id = '$id'";
+
+            if($resultado = $mysqli->query($consulta)){
+                $dados = $resultado->fetch_assoc();
+
+                switch($dados['anonimo']){
+                    case "off":
+                        //exibir input nome, questoes, alternativas e opcao enviar
+                        $consulta = "SELECT * FROM atividades WHERE id = '$id'";
+
+                        if($resultado = $mysqli->query($consulta)){
+                            $dados = $resultado->fetch_assoc();
+
+                            $nome = $dados['nome'];
+                            $Nquestoes = (int)$dados['questoes'];
+                            $Nalternativas = (int)$dados['alternativas'];
+                            $professor = $dados['professor'];
+                            $data = $dados['registro'];
+
+                            //abertura formulário
+                            echo '
+                                <section id="registro" class="text-center">
+                                    <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                                    <h1 class="ubuntu-bold texto-azul">'.$nome.'</h1>
+                                    <p class="ubuntu-regular mt-3 mb-4">Atividade com '.$Nquestoes.' questões criada por '.$professor.' em  <i>'.$data.'</i></p>
+                                    
+                                    <form id="registro-atividade" method="POST" class="form ubuntu-regular text-left mt-5">
+                            '; 
+                            //nome
+                            echo '
+                                <div class="form-group mb-5">
+                                    <label for="nome" style="color: #249EF0 !important;"><h3 class="ubuntu-">Nome</h3></label>
+                                    <input required name="nome" id="nome" placeholder="Insira seu nome completo" class="form-control ubuntu-regular" type="text" maxlength="100">
+                                </div>
+                                <hr><br><br>
+                            ';
+
+                            //questões e alternativas geradas de forma dinâmica
+                            $consulta = "SELECT * FROM questoes WHERE id_atividade = '$id'";
+                            $i = 0;
+
+                            if($resultado = $mysqli->query($consulta)){
+                                while($dados = $resultado->fetch_assoc()){
+                                    $alternativas = [$dados['alternativa1'], $dados['alternativa2'], $dados['alternativa3'], $dados['alternativa4']];   
+                                    shuffle($alternativas);
+                                    $i++;
+
+                                    echo '
+                                        <div class="ubuntu-regular questao mb-5">
+                                            <h3 class="texto-azul d-inline mr-2">Questão '.$i.'</h3><span class="ml-2 ubuntu-regular">'.$nome.'</span>
+                                            <p class="ubuntu-bold mt-3">'.$dados['enunciado'].'</p>
+
+                                            <ul class="ubuntu-regular mt-4">
+                                    ';
+                                        
+                                    for($j = 0; $j <= 3; $j++){
+                                        if(!empty($alternativas[$j])){
+                                            echo '<li><p>'.$alternativas[$j].'</p></li>';
+                                        }
+                                    }
+
+                                    echo '</ul>
+                                        
+                                    ';
+
+                                    echo'
+                                        <div class="form-group mt-4">
+                                            <select required class="form-control" name="resposta-'.$i.'" id="resposta-'.$i.'">
+                                            <option selected value="">Selecionar</option>
+                                            ';
+                                        
+                                    for($j = 0; $j<= 3; $j++){
+                                        if(!empty($alternativas[$j])){
+                                            echo '<option value="'.$alternativas[$j].'">'.$alternativas[$j].'</option>';
+                                        }
+                                    }        
+
+                                    echo'   </select>
+                                            </div>
+                                        </div>
+                                        <hr><br><br>
+                                    ';
+                                }
+                            }
+
+                            //fechamento formulário
+                            echo '
+                                        <button class="btn btn-primary my-3 ubuntu-bold w-100" name="submit" type="submit">Enviar respostas</button>
+                                    </form>
+                                </section> 
+                            ';
+                        } else {
+                            header("Location: ../../pages/erros/erro-conexao.php");
+                            exit();
+                        }
+                    break;
+
+                    case "on":
+                        //exibir input nome, questoes, alternativas e opcao enviar
+                        $consulta = "SELECT * FROM atividades WHERE id = '$id'";
+
+                        if($resultado = $mysqli->query($consulta)){
+                            $dados = $resultado->fetch_assoc();
+
+                            $nome = $dados['nome'];
+                            $Nquestoes = (int)$dados['questoes'];
+                            $Nalternativas = (int)$dados['alternativas'];
+                            $professor = $dados['professor'];
+                            $data = $dados['registro'];
+
+                            //abertura formulário
+                            echo '
+                                <section id="registro" class="text-center">
+                                    <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                                    <h1 class="ubuntu-bold texto-azul">'.$nome.'</h1>
+                                    <p class="ubuntu-regular mt-3 mb-4">Atividade com '.$Nquestoes.' questões criada por '.$professor.' em  <i>'.$data.'</i></p>
+                                    
+                                    <form id="registro-atividade" method="POST" class="form ubuntu-regular text-left mt-5">
+                            '; 
+
+                            //questões e alternativas geradas de forma dinâmica
+                            $consulta = "SELECT * FROM questoes WHERE id_atividade = '$id'";
+                            $i = 0;
+
+                            if($resultado = $mysqli->query($consulta)){
+                                while($dados = $resultado->fetch_assoc()){
+                                    $alternativas = [$dados['alternativa1'], $dados['alternativa2'], $dados['alternativa3'], $dados['alternativa4']];   
+                                    shuffle($alternativas);
+                                    $i++;
+
+                                    echo '
+                                        <div class="ubuntu-regular questao mb-5">
+                                            <h3 class="texto-azul d-inline mr-2">Questão '.$i.'</h3><span class="ml-2 ubuntu-regular">'.$nome.'</span>
+                                            <p class="ubuntu-bold mt-3">'.$dados['enunciado'].'</p>
+
+                                            <ul class="ubuntu-regular mt-4">
+                                    ';
+                                        
+                                    for($j = 0; $j <= 3; $j++){
+                                        if(!empty($alternativas[$j])){
+                                            echo '<li><p>'.$alternativas[$j].'</p></li>';
+                                        }
+                                    }
+
+                                    echo '</ul>
+                                        
+                                    ';
+
+                                    echo'
+                                        <div class="form-group mt-4">
+                                            <select required class="form-control" name="resposta-'.$i.'" id="resposta-'.$i.'">
+                                            <option selected value="">Selecionar</option>
+                                            ';
+                                        
+                                    for($j = 0; $j<= 3; $j++){
+                                        if(!empty($alternativas[$j])){
+                                            echo '<option value="'.$alternativas[$j].'">'.$alternativas[$j].'</option>';
+                                        }
+                                    }        
+
+                                    echo'   </select>
+                                            </div>
+                                        </div>
+                                        <hr><br><br>
+                                    ';
+                                }
+                            }
+
+                            //fechamento formulário
+                            echo '
+                                        <button class="btn btn-primary my-3 ubuntu-bold w-100" name="submit" type="submit">Enviar respostas</button>
+                                    </form>
+                                </section> 
+                            ';
+                        } else {
+                            header("Location: ../../pages/erros/erro-conexao.php");
+                            exit();
+                        }
+                    break;
+                    
+                    case "":
+                        header("Location: ../../pages/erros/atividade-inexistente.php");
+                        exit();
+                    break;
+                }
+            } else {
+                header("Location: ../../pages/erros/erro-conexao.php");
+                exit();
+            }
+        }
+    }
+
+    //FUNÇÃO QUE CORRIGE A ATIVIDADE E RETORNA O TOTAL DE ACERTOS
+    function corrigirRespostas($mysqli, $id, $respostas){
+        //pegar corretas das questoes id = e ver se são iguais as respostas, cada uma que for ++acerto;
+        $id = $mysqli->real_escape_string($id);
+        $consulta = "SELECT correta FROM questoes WHERE id_atividade = '$id'";
+
+        if($resultado = $mysqli->query($consulta)){
+            $acertos = 0;
+            $i = 0;
+            while($dados = $resultado->fetch_assoc()){
+                $i++;
+                if($dados['correta'] == $respostas[$i - 1]){
+                    $acertos++;
+                }
+            }
+        }
+        return $acertos;
     }
 ?>

@@ -15,9 +15,9 @@ redirecionaLogado();
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
     <title>Magister - Login</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
-    <meta name="theme-color" content="##249EF0">
+    <meta name="theme-color" content="#249EF0">
     
 <!--BOOTSTRAP CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -29,19 +29,15 @@ redirecionaLogado();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-<!--CHART-JS-->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!--GERAR CHARTS JS-->
-    <script src="charts/charts.js"></script>
 </head>
 <body>
     <div class="container">
         <main>
             <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-5 p-4 border">
+                <div class="col-11 col-md-6 col-lg-5 p-4 border">
                     <section id="registro" class="text-center">
-                        <h1 class="ubuntu-bold">Login</h1>
-                        <p class="ubuntu-regular my-4">Insira seus dados</p>
+                        <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                        <h1 class="ubuntu-bold texto-azul">Login</h1>
                         <form method="POST" class="form ubuntu-regular text-left">
                             <div class="form-group">
                                 <label for="email">E-mail</label>

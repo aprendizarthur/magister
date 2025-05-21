@@ -16,7 +16,7 @@ criarAtividade($mysqli);
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
     <title>Magister - Nova Atividade</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
     <meta name="theme-color" content="##249EF0">
     
@@ -35,10 +35,11 @@ criarAtividade($mysqli);
     <div class="container">
         <main>
             <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-5 p-4 border">
+                <div class="col-11 col-md-6 col-lg-5 p-4 border">
                     <section id="registro" class="text-center">
-                        <h1 class="ubuntu-bold">Nova Atividade</h1>
-                        <p class="ubuntu-regular my-4">Preencha o formulário com os dados</p>
+                        <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span class="d-none d-md-inline">MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                        <h1 class="ubuntu-bold texto-azul">Nova Atividade</h1>
+                        <p class="ubuntu-regular mt-2 mb-4">Preencha o formulário com os dados</p>
                         <form method="POST" class="form ubuntu-regular text-left">
                             <div class="form-group">
                                 <label for="nome">Nome ou Assunto</label>

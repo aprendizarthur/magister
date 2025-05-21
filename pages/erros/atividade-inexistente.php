@@ -1,9 +1,5 @@
 <?php 
 session_start();
-require('../../functions/CRUD/CRUDatividades.php');
-require('../../functions/redirects.php');
-redirecionaDeslogado();
-redirecionaAluno();
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +10,10 @@ redirecionaAluno();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
-    <title>Magister - Nova Atividade</title>
+    <title>Magister - Atividade Inexistente</title>
     <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
-    <meta name="theme-color" content="##249EF0">
+    <meta name="theme-color" content="rgb(240, 175, 175)">
     
 <!--BOOTSTRAP CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -34,8 +30,12 @@ redirecionaAluno();
     <div class="container">
         <main>
             <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-8 p-4 border">
-                    <?php criarQuestoes($mysqli);?>
+                <div id="registro" class="col-11 col-md-6 p-4 border text-center">
+                    <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                    <h1 class="ubuntu-bold texto-azul">Atividade não encontrada</h1>
+                    <p class="ubuntu-regular my-4">A atividade não existe ou pode ter sido excluída do sistema por um professor.</p>
+
+                    <a class="btn btn-primary ubuntu-bold w-100" href="../forms/login.php">Voltar</a>
                 </div>
             </div>
         </main>

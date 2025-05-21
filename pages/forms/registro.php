@@ -15,7 +15,7 @@ redirecionaLogado();
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
     <title>Magister - Registro</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
     <meta name="theme-color" content="##249EF0">
     
@@ -34,10 +34,10 @@ redirecionaLogado();
     <div class="container">
         <main>
             <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-5 p-4 border">
+                <div class="col-11 col-md-6 col-lg-5 p-4 border">
                     <section id="registro" class="text-center">
-                        <h1 class="ubuntu-bold">Registre-se</h1>
-                        <p class="ubuntu-regular my-4">Insira seus dados</p>
+                        <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
+                        <h1 class="ubuntu-bold texto-azul">Registre-se</h1>
                         <form method="POST" class="form ubuntu-regular text-left">
                             <div class="form-group">
                                 <label for="nome">Nome </label>

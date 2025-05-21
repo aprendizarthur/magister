@@ -2,8 +2,8 @@
 session_start();
 require('../../functions/CRUD/CRUDatividades.php');
 require('../../functions/redirects.php');
-redirecionaDeslogado();
-redirecionaAluno();
+atividadeExiste($mysqli);
+realizouAtividade($mysqli);
 ?>
 
 <!DOCTYPE html>
@@ -14,10 +14,10 @@ redirecionaAluno();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
-    <title>Magister - Nova Atividade</title>
+    <title>Magister - Atividade</title>
     <link rel="icon" type="image/x-icon" href="../../images/assets/icon.ico">
     <meta name="description" content="">
-    <meta name="theme-color" content="##249EF0">
+    <meta name="theme-color" content="#249EF0">
     
 <!--BOOTSTRAP CSS-->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
@@ -33,9 +33,10 @@ redirecionaAluno();
 <body>
     <div class="container">
         <main>
-            <div class="row my-5 d-flex justify-content-center">
-                <div class="col-11 col-md-8 p-4 border">
-                    <?php criarQuestoes($mysqli);?>
+            <div class="row d-flex justify-content-around">
+                <!--CONTEUDO PRINCIPAL-->
+                <div class="col-11 col-lg-8 p-4 border">
+                    <?php exibirAtividade($mysqli);?>
                 </div>
             </div>
         </main>

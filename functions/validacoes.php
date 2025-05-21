@@ -119,4 +119,45 @@ include('conn.php');
             }
         }
     }
+
+    //VALIDANDO SE ID DA ATIVIDADE EXISTE
+    function atividadeExiste($mysqli){
+        $id = htmlspecialchars($_GET['id'] ?? "vazio");
+        $id = $mysqli->real_escape_string($id);
+
+        $consulta = "SELECT COUNT(*) AS total FROM atividades WHERE id = '$id'";
+
+        if($resultado = $mysqli->query($consulta)){
+            $dados = $resultado->fetch_assoc();
+            if($dados['total'] == 0){
+                header("Location: ../../pages/erros/atividade-inexistente.php");
+                exit();
+            }
+        } else {
+            header("Location: ../../pages/erros/erro-conexao.php");
+            exit();
+        }
+    }
+
+    //VERIFICANDO SE IP+USER_AGENT JÁ REALIZOU ATIVIDADE
+    function realizouAtividade($mysqli){
+        if(empty($_SESSION['tipo-conta']) || $_SESSION['tipo-conta'] != "Professor"){
+            $idAtividade = $mysqli->real_escape_string($_GET['id']);
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+            $consulta = "SELECT COUNT(*) AS total FROM resultados WHERE id_atividade = '$idAtividade' AND ip = '$ip' AND user_agent = '$userAgent'";
+
+            if($resultado = $mysqli->query($consulta)){
+                $dados = $resultado->fetch_assoc();
+                if($dados['total'] > 0){
+                    header("Location: ../../pages/erros/atividade-realizada.php");
+                    exit();
+                }
+            } else {
+                header("Location: ../../pages/erros/erro-conexao.php");
+                exit();
+            }    
+        }
+    }
 ?>

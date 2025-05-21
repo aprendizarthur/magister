@@ -11,7 +11,7 @@ session_start();
 
 <!--TÍTULO/ÍCONE/DESCRIÇÃO DA PÁGINA/COR TEMA NAVEGADOR-->
     <title>Magister - Index</title>
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="images/assets/icon.ico">
     <meta name="description" content="">
     <meta name="theme-color" content="##249EF0">
     
