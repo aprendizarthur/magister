@@ -33,7 +33,7 @@ session_start();
                 <div id="registro" class="col-11 col-md-6 p-4 border text-center">
                     <span class="ubuntu-bold d-block mb-4"><i class="fa-solid fa-graduation-cap fa-xl"></i><span>MAGISTER <sup class="ubuntu-light">®</sup></span></span>
                     <h1 class="ubuntu-bold texto-azul">Atividade enviada</h1>
-                    <p class="ubuntu-regular my-4"><?php  if(isset($_SESSION['envio-atividade-nome-usuario'])){ echo $_SESSION['envio-atividade-nome-usuario'] . " recebemos a sua atividade!";}?></p> <p class="ubuntu-bold">Você teve <span class="texto-azul"><?php echo $_SESSION['envio-atividade-acertos'];?> acerto(s)</span>!</p>
+                    <p class="ubuntu-regular my-4"><?php  if(isset($_SESSION['envio-atividade-nome-usuario'])){ echo $_SESSION['envio-atividade-nome-usuario'] . " recebemos a sua atividade!"; unset($_SESSION['envio-atividade-nome-usuario']);}?></p> <p class="ubuntu-bold">Você obteve <span class="texto-azul"><?php echo $_SESSION['envio-atividade-acertos'];?> acerto(s)</span>!</p>
                 </div>
             </div>
         </main>

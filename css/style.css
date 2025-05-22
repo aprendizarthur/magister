@@ -126,6 +126,20 @@
     }
 
 /* SELETORES CLASSE */
+    .table{
+        border: 1px solid #dee2e6;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .table td{
+        vertical-align: middle;
+    }
+
+    .table tr:nth-child(even){
+        background-color: #ebebeb60 !important;
+    }
+
     .questao ul{
         padding-left: 30px;
         list-style: upper-roman;
@@ -308,6 +322,13 @@
         #nav-principal{
         height: 100vh;
         }
+    }
+
+    @media(max-width: 1200px){
+        #atividades footer a{
+            color: #249EF0;
+            padding: 5px;
+        }  
     }
 
 /* CLASSES DE FONTE */

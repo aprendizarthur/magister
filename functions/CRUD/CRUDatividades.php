@@ -218,8 +218,8 @@ require('../../functions/validacoes.php');
                                     </div>
                                     <footer>
                                         <ul class="p-2 d-flex justify-content-around">                                            
-                                            <li class="resultados"><a href="atividades/resultados-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-chart-simple mr-1"></i>Resultados</a></li>
-                                            <li class="editar"><a href="atividades/editar-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-pen mr-1"></i>Editar</a></li>
+                                            <li class="resultados"><a href="resultados-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-chart-simple mr-1"></i>Resultados</a></li>
+                                            <li class="editar"><a href="editar-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-pen mr-1"></i>Editar</a></li>
                                         </ul>
                                     </footer>
                                 </article>
@@ -268,8 +268,8 @@ require('../../functions/validacoes.php');
                                     </div>
                                     <footer>
                                         <ul class="p-2 d-flex justify-content-around">                                            
-                                            <li class="resultados"><a href="atividades/resultados-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-chart-simple mr-1"></i>Resultados</a></li>
-                                            <li class="editar"><a href="atividades/editar-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-pen mr-1"></i>Editar</a></li>
+                                            <li class="resultados"><a href="resultados-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-chart-simple mr-1"></i>Resultados</a></li>
+                                            <li class="editar"><a href="editar-atividade.php?id='.$dados['id'].'"><i class="fa-solid fa-pen mr-1"></i>Editar</a></li>
                                         </ul>
                                     </footer>
                                 </article>
@@ -563,5 +563,59 @@ require('../../functions/validacoes.php');
         $dadosAtividade[1] = $dados['total'];
         
         return $dadosAtividade;
+    }
+
+    function resultadosAtividade($mysqli){
+        $id = $mysqli->real_escape_string($_GET['id']);
+
+        $consulta = "SELECT nome FROM atividades WHERE id = '$id'";
+
+        if($resultado = $mysqli->query($consulta)){
+            $dados = $resultado->fetch_assoc();
+            $nomeAtividade = $dados['nome'];
+        }
+
+        echo '
+            <h2 class="d-inline ubuntu-regular">Resultados <h2 class="d-inline ubuntu-bold" style="color: #249EF0 !important">'.$nomeAtividade.'</h2></h2>
+                        <table class="table mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Acertos</th>
+                                    <th>Nome</th>
+                                    <th class="d-none d-md-block">Entrega</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+            ';
+       
+        
+        $consulta = "SELECT nome_aluno, acertos, registro FROM resultados WHERE id_atividade = '$id' ORDER BY acertos DESC";
+
+        if($resultado = $mysqli->query($consulta)){
+            while($dados = $resultado->fetch_assoc()){
+                if($dados['nome_aluno'] == ""){
+                    echo'
+                        <tr>
+                            <td>'.$dados['acertos'] .'</td>
+                            <td>Anônimo</td>
+                            <td class="d-none d-md-block">'.$dados['registro'].'</td>
+                        </tr>
+                    ';    
+                } else {
+                    echo'
+                        <tr>
+                            <td>'.$dados['acertos'] .'</td>
+                            <td>'.$dados['nome_aluno'].'</td>
+                            <td class="d-none d-md-block">'.$dados['registro'].'</td>
+                        </tr>
+                    ';
+                }
+            }
+
+            echo '
+                    </tbody>
+                </table>
+            ';
+        }
     }
 ?>
